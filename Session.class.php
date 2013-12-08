@@ -16,13 +16,9 @@ class Session {
 		}
 		if(!session_start()) {
 			throw new Exception('Could not start session.');
-			return false;
 		}
 		if(null !== $sNamespace) {
 			$this->sNamespace = $sNamespace;
-		}
-		if(!isset($_SESSION[$this->sNamespace]) || !is_array($_SESSION[$this->sNamespace])) {
-			$_SESSION[$this->sNamespace] = array();
 		}
 	}
 
@@ -33,13 +29,14 @@ class Session {
 
 	public function set($sName = null, $mValue = null)
 	{
+		if(!isset($_SESSION[$this->sNamespace]) || !is_array($_SESSION[$this->sNamespace])) {
+			$_SESSION[$this->sNamespace] = array();
+		}
 		if(null === $sName) {
 			throw new Exception('Invalid name supplied to Session.');
-			return false;
 		}
 		if(null === $mValue) {
 			throw new Exception('Value not supplied to Session.');
-			return false;
 		}
 		$_SESSION[$this->sNamespace][$sName] = $mValue;
 		return true;
@@ -49,7 +46,6 @@ class Session {
 	{
 		if(null === $sName) {
 			throw new Exception('Invalid name supplied to Session.');
-			return false;
 		}
 		if(isset($_SESSION[$this->sNamespace][$sName])) {
 			return $_SESSION[$this->sNamespace][$sName];
@@ -57,11 +53,10 @@ class Session {
 		return false;
 	}
 
-	public function remove($sName)
+	public function remove($sName = null)
 	{
 		if(null === $sName) {
 			throw new Exception('Invalid name supplied to Session.');
-			return false;
 		}
 		if(isset($_SESSION[$this->sNamespace][$sName])) {
 			unset($_SESSION[$this->sNamespace][$sName]);
@@ -73,5 +68,6 @@ class Session {
 		foreach($_SESSION[$this->sNamespace] as $sName => $mValue) {
 			$this->remove($sName);
 		}
+		unset($_SESSION[$this->sNamespace]);
 	}
 }
