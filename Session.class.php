@@ -7,7 +7,7 @@
 
 class Session {
 
-	private $sNamespace = 'session_namespace';
+	private $sNamespace = 'psy-core';
 
 	function __construct($sSessionId = null, $sNamespace = null)
 	{
